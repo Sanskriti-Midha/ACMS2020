@@ -30,4 +30,8 @@ public class Printer {
 	// their completion status
 	void show_print_ids(Printer P[]) {
 	}
+	
+	public static void main(String args[]) {
+		System.out.println("Hello World");
+	}
 }
