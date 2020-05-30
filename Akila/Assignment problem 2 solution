@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include<stdlib.h>
+
+ struct list 
+ {
+     int data;
+     struct list*next;
+     struct list*random;
+ };
+ 
+ // Function that takes a linked list & returns its complete copy
+struct list* CopyList(struct list* head)
+{
+	struct list* current = head;	// used to iterate over original list
+	struct list* newList = NULL; // head of the new list
+	struct list* temp = NULL;	// point to last node in new list
+
+	while (current != NULL)
+	{
+		// special case for the first new Node
+		if (newList == NULL)
+		{
+			newList = (struct list*)malloc(sizeof(struct list));
+			newList->data = current->data;
+			newList->next = NULL;
+			newList->random=current;
+			temp = newList;
+		}
+		else
+		{
+			temp->next = (struct list*)malloc(sizeof(struct list));
+			temp = temp->next;
+			temp->data = current->data;
+			temp->next = NULL;
+			temp->random=current;
+		}
+		current = current->next;
+	}
+
+	return newList;
+}
+ //Function that takes doubly linked list and creates a complete copy of it.
+ //links too..
+void function(struct list*head)
+{
+    if(head==NULL)
+    {
+        printf("Given list is Empty..!");
+        return;
+    }
+    struct node*new= CopyList(head);
+    copyLink(head,new);
+    printf("Copy of given liSt...!\n");
+    print(new);
+}
+// To copy the random link of original list
+void copyLink(struct list*head,struct list*new)
+{
+    struct list*a=(struct list*)malloc(sizeof(struct list));
+    struct list*b=(struct list*)malloc(sizeof(struct list));
+    a=head;
+    b=new;
+    while(a!=NULL)
+    {
+        b->random=(b->random)->random;
+        a=a->next;
+        b=b->next;
+    }
+}
+//Function for printing the list, that is being passed to it.
+void print(struct list*a)
+{
+    struct list*b=(struct list*)malloc(sizeof(struct list));
+    b=a;
+    if(a==NULL)
+    {
+      printf("List is Empty");
+      return;
+    }
+    while(b->next!=NULL)
+    {
+        printf("%d->",b->data);
+        b=b->next;
+    }printf("%d\n",b->data);
+    b=a;
+    while(b!=NULL)
+    {
+        printf("%d->random->%d\n",b->data,(b->random)->data);
+        b=b->next;
+    }
+}
+int main()
+{
+    //Here there is the sample doubly linked list with given criteria.
+    struct list*a=(struct list*)malloc(sizeof(struct list));
+    struct list*b=(struct list*)malloc(sizeof(struct list));
+    struct list*c=(struct list*)malloc(sizeof(struct list));
+    a->data=10;
+    b->data=20;
+    c->data=30;
+    a->next=b;
+    b->next=c;
+    c->next=NULL;
+    a->random=c;
+    b->random=a;
+    c->random=b;
+    printf("Original list(Given)...!\n");
+    print(a);
+    function(a);
+    return 0;
+}
+
