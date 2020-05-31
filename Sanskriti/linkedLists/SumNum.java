@@ -10,7 +10,6 @@ public class SumNum {
 		Scanner sc = new Scanner(System.in);
 		String x;
 		int y;
-		Node temp = new Node(0);
 		System.out.println("Enter first number(digit by digit):");
 		x = sc.nextLine();
 		do {
@@ -84,6 +83,9 @@ public class SumNum {
 		
 		System.out.println("Answer is:");
 		ans.printList();
+		
+		sc.close();
 	}
+	
 
 }
