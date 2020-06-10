@@ -1,0 +1,62 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include<limits.h>
+// Data structure to store a Binary Search Tree node
+struct Node {
+	int data;
+	struct Node *left, *right;
+};
+// Function to create a new binary tree node having given key
+struct Node* newNode(int key)
+{
+	struct Node* node =(struct Node*)malloc(sizeof(struct Node));
+	node->data = key;
+	node->left = node->right = NULL;
+	return node;
+}
+// Recursive function to insert a key into BST
+struct Node* insert(struct Node* root, int key)
+{
+	if (root == NULL)
+		return newNode(key);
+	// if given key is less than the root node, recur for left subtree
+	if (key < root->data)
+		root->left = insert(root->left, key);
+	// if given key is more than the root node, recur for right subtree
+	else
+		root->right = insert(root->right, key);
+	return root;
+}
+// Function to find k'th smallest element in BST,here i denotes the number of nodes processed so far
+int kthSmall(struct Node* root, int *i, int k)
+{
+    if (root == NULL)
+		return INT_MAX;
+	// search in left subtree
+	int left = kthSmall(root->left, i, k);
+	// if k'th smallest is found in left subtree, return it
+	if (left != INT_MAX)
+		return left;
+	// if current element is k'th smallest, return its value
+	if (++*i == k)
+		return root->data;
+	// else search in right subtree
+	return kthSmall(root->right, i, k);
+}
+int main()
+{
+	struct Node* root = NULL;
+	int keys[] = { 23,85,67,63,76,54,10,8 };
+     int n=sizeof(keys)/sizeof(keys[0]);
+	for (int key=0;key<n;key++)
+		root = insert(root, keys[key]);
+	int n,i=0;
+	printf("Enter n value...");
+	scanf("%d",&n);
+	int res = kthSmall(root,&i, n);
+	if (res != INT_MAX)
+		printf("%d",res);
+	else
+		printf("Invalid Input");
+	return 0;
+}
