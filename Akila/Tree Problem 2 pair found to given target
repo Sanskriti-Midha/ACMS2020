@@ -1,0 +1,157 @@
+/* In a balanced binary search tree isPairPresent two element which sums to 
+a given value */
+#include <stdio.h> 
+#include <stdlib.h> 
+#define MAX 100 
+// A BST node 
+struct node { 
+	int val; 
+	struct node *left, *right; 
+}; 
+struct Stack { 
+	int size; 
+	int top; 
+	struct node** array; 
+}; 
+
+// A utility function to create a stack of given size 
+struct Stack* createStack(int size) 
+{ 
+	struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack)); 
+	stack->size = size; 
+	stack->top = -1; 
+	stack->array = (struct node**)malloc(stack->size * sizeof(struct node*)); 
+	return stack; 
+} 
+
+// BASIC OPERATIONS OF STACK 
+int isFull(struct Stack* stack) 
+{ 
+	return stack->top - 1 == stack->size; 
+} 
+
+int isEmpty(struct Stack* stack) 
+{ 
+	return stack->top == -1; 
+} 
+
+void push(struct Stack* stack, struct node* node) 
+{ 
+	if (isFull(stack)) 
+		return; 
+	stack->array[++stack->top] = node; 
+} 
+
+struct node* pop(struct Stack* stack) 
+{ 
+	if (isEmpty(stack)) 
+		return NULL; 
+	return stack->array[stack->top--]; 
+} 
+
+// Returns true if a pair with target sum exists in BST, otherwise false 
+int isPairPresent(struct node* root, int target) 
+{ 
+	// Create two stacks. s1 is used for normal inorder traversal 
+	// and s2 is used for reverse inorder traversal 
+	struct Stack* s1 = createStack(MAX); 
+	struct Stack* s2 = createStack(MAX); 
+
+	// Note the sizes of stacks is MAX
+	// done1, val1 and curr1 are used for normal inorder traversal using s1 
+	// done2, val2 and curr2 are used for reverse inorder traversal using s2 
+	int done1 = 0, done2 = 0; 
+	int val1 = 0, val2 = 0; 
+	struct node *curr1 = root, *curr2 = root; 
+	// The loop will break when we either find a pair or one of the two 
+	// traversals is complete 
+	while (1) { 
+		// Find next node in normal Inorder traversal. 
+		while (done1 == 0) { 
+			if (curr1 != NULL)
+			{ 
+				push(s1, curr1); 
+				curr1 = curr1->left; 
+			} 
+			else 
+			{ 
+				if (isEmpty(s1)) 
+					done1 = 1; 
+				else { 
+					curr1 = pop(s1); 
+					val1 = curr1->val; 
+					curr1 = curr1->right; 
+					done1 = 1; 
+				} 
+			} 
+		} 
+
+		// Find next node in REVERSE Inorder traversal. The only 
+		// difference between above and below loop is, in below loop 
+		// right subtree is traversed before left subtree 
+		while (done2 == 0) { 
+			if (curr2 != NULL) { 
+				push(s2, curr2); 
+				curr2 = curr2->right; 
+			} 
+			else { 
+				if (isEmpty(s2)) 
+					done2 = 1; 
+				else { 
+					curr2 = pop(s2); 
+					val2 = curr2->val; 
+					curr2 = curr2->left; 
+					done2 = 1; 
+				} 
+			} 
+		} 
+
+		// If we find a pair, then print the pair and return. The first 
+		// condition makes sure that two same values are not added 
+		if ((val1 != val2) && (val1 + val2) == target) { 
+			printf("\n Pair Found: %d + %d = %d\n", val1, val2, target); 
+			return 1; 
+		} 
+
+		// If sum of current values is smaller, then move to next node in 
+		// normal inorder traversal 
+		else if ((val1 + val2) < target) 
+			done1 = 0; 
+
+		// If sum of current values is greater, then move to next node in 
+		// reverse inorder traversal 
+		else if ((val1 + val2) > target) 
+			done2 = 0; 
+
+		// If any of the inorder traversals is over, then there is no pair 
+		// so return false 
+		if (val1 >= val2) 
+			return 0; 
+	} 
+} 
+
+// A utility function to create BST node 
+struct node* NewNode(int val) 
+{ 
+	struct node* t = (struct node*)malloc(sizeof(struct node)); 
+	t->val = val; 
+	t->right = t->left = NULL; 
+	return t; 
+} 
+int main() 
+{ 
+    //sample BST created...
+    struct node* root = NewNode(15); 
+	root->left = NewNode(10); 
+	root->right = NewNode(20); 
+	root->left->left = NewNode(8); 
+	root->left->right = NewNode(12); 
+	root->right->left = NewNode(16); 
+	root->right->right = NewNode(25); 
+	int target; 
+	//Getting input from user...
+	scanf("%d",&target);
+	if (isPairPresent(root, target) == 0) 
+		printf("\n No such values are found\n");
+	return 0; 
+} 
