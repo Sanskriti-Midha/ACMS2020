@@ -7,5 +7,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jsoup-1.13.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jar_files/okhttp-4.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jar_files/annotations-13.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jar_files/kotlin-stdlib-1.3.71.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jar_files/kotlin-stdlib-common-1.3.70.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Samir/Downloads/jar_files/okio-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
